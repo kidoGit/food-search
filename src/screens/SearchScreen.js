@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import SearchBar from '../components/SearchBar';
+import useResults from '../hooks/useResults';
 
 const SearchScreen = () => {
     const [term, setTerm] = useState('');
+    const [searchApi, errorMessage, results] = useResults();
 
     return (
         <View>
             <SearchBar
                 term={term}
-                onTermChange={(newterm) => setTerm(newterm)}
-                onTermSubmit={() => console.log('term submitted')}
+                onTermChange={setTerm}
+                onTermSubmit={() => searchApi(term)}
             />
-            <Text>search screen</Text>
-            <Text>{term}</Text>
+            {errorMessage ? <Text>{errorMessage}</Text> : null}
+            <Text>We have found {results.length} results</Text>
         </View>
     );
 };
